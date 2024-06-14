@@ -16,6 +16,13 @@ Para ejecutar el servidor en producción:
 1. Compila el código TypeScript a JavaScript con `npm run build`.
 2. Ejecuta el servidor con `npm start`.
 
+## Inicialización de la API en un contenedor Docker
+
+1. Ubicarse en la raíz del proyecto 
+2. Constuir la imagen de Docker con `docker build -t uno-vehiculos-backend .`.
+3. Correr el contenedor `docker run -p 4000:4000 uno-vehiculos-backend`.
+
+
 ## Uso
 
 - `GET /vehiculo`: Obtiene todos los vehiculos.
@@ -23,12 +30,6 @@ Para ejecutar el servidor en producción:
 - `POST /vehiculo`: Crea un nuevo vehiculo.
 - `PUT /vehiculo/:id`: Actualiza un vehiculo existente.
 - `DELETE /vehiculo/:id`: Elimina un vehiculo.
-
-## Inicialización de la API en un contenedor Docker
-1. Ubicarse en la raíz del proyecto 
-2. Constuir la imagen de Docker con `docker build -t uno-vehiculos-backend .`.
-3. Correr el contenedor `docker run -p 4000:4000 uno-vehiculos-backend`.
-
 
 
 ### Ejemplo de solicitud POST
