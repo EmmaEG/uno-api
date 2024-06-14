@@ -24,6 +24,13 @@ Para ejecutar el servidor en producción:
 - `PUT /vehiculo/:id`: Actualiza un vehiculo existente.
 - `DELETE /vehiculo/:id`: Elimina un vehiculo.
 
+## Inicialización de la API en un contenedor Docker
+1. Ubicarse en la raíz del proyecto 
+2. Constuir la imagen de Docker con `docker build -t uno-vehiculos-backend .`.
+3. Correr el contenedor `docker run -p 4000:4000 uno-vehiculos-backend`.
+
+
+
 ### Ejemplo de solicitud POST
 
 ```json
@@ -36,3 +43,4 @@ Para ejecutar el servidor en producción:
   "servicio": "1 SERVICE",
   "estado": "INGRESADO"
  },
+
