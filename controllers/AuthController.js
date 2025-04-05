@@ -80,7 +80,7 @@ AuthController.loginUser = (req, res) => __awaiter(void 0, void 0, void 0, funct
         const user = yield UserClass_1.User.findOne({ email });
         if (!user) {
             return res.status(400).json({
-                msg: "Verifique el correo",
+                msg: "Verifique el credenciales",
             });
         }
         const validPassword = Bcryptjs.compareSync(req.body.password, user.password);

@@ -16,6 +16,7 @@ app.use(cors());
 app.use(express_1.default.static("public")); // express.static es un middleware que se usa para definir directorios publicos
 app.use(express_1.default.json()); // to process the information that comes in json format
 // routes
+app.use("/taller/auth", require("./routes/auth"));
 app.use("/taller/vehicle", require("./routes/Vehicle"));
 // watch to requests
 app.listen(process.env.PORT, () => {
