@@ -14,10 +14,17 @@ export class AuthController {
         });
       }
 
-      user = new User(req.body);
+      // user = new User(req.body);
 
       const salt = Bcryptjs.genSaltSync();
-      user.setPassword(Bcryptjs.hashSync(req.body.password, salt));
+      // user.setPassword(Bcryptjs.hashSync(req.body.password, salt));
+
+      const hashedPassword = Bcryptjs.hashSync(req.body.password, salt);
+      user = new User({
+        name: req.body.name,
+        email: req.body.email,
+        password: hashedPassword
+      });
 
       await user.save();
 
