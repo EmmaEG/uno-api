@@ -32,31 +32,39 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ConfigDB = void 0;
-const Mongoose = __importStar(require("mongoose"));
-class ConfigDB {
+exports.ValidatorMiddlewares = void 0;
+const Validators = __importStar(require("express-validator"));
+const JWT = __importStar(require("jsonwebtoken"));
+class ValidatorMiddlewares {
 }
-exports.ConfigDB = ConfigDB;
-_a = ConfigDB;
-ConfigDB.dbConnecttion = () => __awaiter(void 0, void 0, void 0, function* () {
+exports.ValidatorMiddlewares = ValidatorMiddlewares;
+ValidatorMiddlewares.fieldValidator = (req, res, next) => {
+    const errors = Validators.validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            ok: false,
+            errors: errors.mapped(),
+        });
+    }
+    next();
+};
+ValidatorMiddlewares.jwtValidator = (req, res, next) => {
+    const token = req.header("x-token");
+    if (!token) {
+        return res.status(401).send({
+            ok: false,
+        });
+    }
     try {
-        yield Mongoose.connect(process.env.DB_CNN);
-        Mongoose.set("strictQuery", true);
-        console.log("db online");
+        const payload = JWT.verify(token, process.env.JWT_KEY);
+        req.body.id = payload.id;
+        req.body.name = payload.name;
     }
     catch (error) {
-        console.log(error);
-        throw new Error("Error to up db");
+        return res.status(401).send({
+            ok: false,
+        });
     }
-});
+    next();
+};

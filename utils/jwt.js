@@ -41,22 +41,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ConfigDB = void 0;
-const Mongoose = __importStar(require("mongoose"));
-class ConfigDB {
-}
-exports.ConfigDB = ConfigDB;
-_a = ConfigDB;
-ConfigDB.dbConnecttion = () => __awaiter(void 0, void 0, void 0, function* () {
+exports.makeToken = void 0;
+const JWT = __importStar(require("jsonwebtoken"));
+const makeToken = (id, name) => __awaiter(void 0, void 0, void 0, function* () {
+    const payload = { id, name };
     try {
-        yield Mongoose.connect(process.env.DB_CNN);
-        Mongoose.set("strictQuery", true);
-        console.log("db online");
+        const token = yield JWT.sign(payload, process.env.JWT_KEY, { expiresIn: "2h" });
+        return token;
     }
-    catch (error) {
-        console.log(error);
-        throw new Error("Error to up db");
+    catch (err) {
+        console.error(err);
+        throw err;
     }
 });
+exports.makeToken = makeToken;

@@ -1,11 +1,14 @@
 import { Router } from "express";
 import { VehicleController } from "../controllers/VehicleController";
+import { ValidatorMiddlewares } from "../middlewares/ValidatorMiddlewares";
 
 /*
     Vehicles Routes
     host + /taller/vehicle
 */
 const router = Router();
+
+router.use(ValidatorMiddlewares.jwtValidator); // to apply to all routes below
 
 router.get("/", VehicleController.getVehicles);
 

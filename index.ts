@@ -15,6 +15,7 @@ app.use(express.static("public")); // express.static es un middleware que se usa
 app.use(express.json()); // to process the information that comes in json format
 
 // routes
+app.use("/taller/auth", require("./routes/auth"));
 app.use("/taller/vehicle", require("./routes/Vehicle"));
 
 // watch to requests
