@@ -97,6 +97,7 @@ AuthController.loginUser = (req, res) => __awaiter(void 0, void 0, void 0, funct
         res.status(200).json({
             id: user.id,
             name: user.name,
+            role: user.role,
             token,
         });
     }
