@@ -39,7 +39,7 @@ const Validators = __importStar(require("express-validator"));
 const ValidatorMiddlewares_1 = require("../middlewares/ValidatorMiddlewares");
 /*
     Users Routes
-    host + /book-list/auth
+    host + /taller/auth
 */
 const router = (0, express_1.Router)();
 router.post("/register", [
@@ -48,6 +48,7 @@ router.post("/register", [
     Validators.check("email", "El email es obligatorio").isEmail(),
     Validators.check("password", "El password debe tener 6 caracteres como mínimo").isLength({ min: 6 }),
     ValidatorMiddlewares_1.ValidatorMiddlewares.fieldValidator,
+    ValidatorMiddlewares_1.ValidatorMiddlewares.adminJwtValidator
 ], AuthController_1.AuthController.createUser);
 router.post("/", [
     Validators.check("email", "El email es obligatorio").isEmail(),

@@ -47,13 +47,17 @@ exports.AuthController = void 0;
 const UserClass_1 = require("../models/UserClass");
 const Bcryptjs = __importStar(require("bcryptjs"));
 const jwt_1 = require("../utils/jwt");
+// const roles = [
+//   role: 'admin',
+//   role: 'employee'
+// ]
 class AuthController {
 }
 exports.AuthController = AuthController;
 _a = AuthController;
 AuthController.createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let user = yield UserClass_1.User.findOne({ email: req.body.email }); // if usewr doesn't exists on db retunr null
+        let user = yield UserClass_1.User.findOne({ email: req.body.email }); // if user doesn't exists on db retunr null
         if (user) {
             return res.status(400).json({
                 msg: "El usuario ya existe con ese correo",
@@ -64,7 +68,7 @@ AuthController.createUser = (req, res) => __awaiter(void 0, void 0, void 0, func
         user.setPassword(Bcryptjs.hashSync(req.body.password, salt));
         yield user.save();
         res.status(201).json({
-            ok: true
+            ok: true,
         });
     }
     catch (error) {
@@ -89,7 +93,7 @@ AuthController.loginUser = (req, res) => __awaiter(void 0, void 0, void 0, funct
                 msg: "Verifique sus credenciales",
             });
         }
-        const token = yield (0, jwt_1.makeToken)(user.id, user.name);
+        const token = yield (0, jwt_1.makeToken)(user.id, user.name, user.role);
         res.status(200).json({
             id: user.id,
             name: user.name,
@@ -105,7 +109,12 @@ AuthController.loginUser = (req, res) => __awaiter(void 0, void 0, void 0, funct
 });
 AuthController.renewToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const token = yield (0, jwt_1.makeToken)(req.body.id, req.body.name);
+        const email = req.body.email;
+        const user = yield UserClass_1.User.findOne({ email });
+        if (!user) {
+            return;
+        }
+        const token = yield (0, jwt_1.makeToken)(user.id, user.name, user.role);
         res.status(200).json({
             token,
         });

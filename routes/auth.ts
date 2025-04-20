@@ -5,7 +5,7 @@ import { ValidatorMiddlewares } from "../middlewares/ValidatorMiddlewares";
 
 /*
     Users Routes
-    host + /book-list/auth
+    host + /taller/auth
 */
 const router = Router();
 
@@ -20,6 +20,7 @@ router.post(
       "El password debe tener 6 caracteres como mínimo"
     ).isLength({ min: 6 }),
     ValidatorMiddlewares.fieldValidator,
+    ValidatorMiddlewares.adminJwtValidator
   ],
   AuthController.createUser
 );

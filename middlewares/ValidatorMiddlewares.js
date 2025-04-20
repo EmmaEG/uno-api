@@ -36,6 +36,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ValidatorMiddlewares = void 0;
 const Validators = __importStar(require("express-validator"));
 const JWT = __importStar(require("jsonwebtoken"));
+const Roles_enum_1 = require("../models/Roles.enum");
 class ValidatorMiddlewares {
 }
 exports.ValidatorMiddlewares = ValidatorMiddlewares;
@@ -60,6 +61,26 @@ ValidatorMiddlewares.jwtValidator = (req, res, next) => {
         const payload = JWT.verify(token, process.env.JWT_KEY);
         req.body.id = payload.id;
         req.body.name = payload.name;
+    }
+    catch (error) {
+        return res.status(401).send({
+            ok: false,
+        });
+    }
+    next();
+};
+ValidatorMiddlewares.adminJwtValidator = (req, res, next) => {
+    const token = req.header("x-token");
+    if (!token) {
+        return res.status(401).send({
+            ok: false,
+        });
+    }
+    try {
+        const payload = JWT.verify(token, process.env.JWT_KEY);
+        if (payload.role !== Roles_enum_1.UserRole.ADMIN) {
+            return res.status(403).json({ msg: "Acceso denegado" });
+        }
     }
     catch (error) {
         return res.status(401).send({

@@ -44,8 +44,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.makeToken = void 0;
 const JWT = __importStar(require("jsonwebtoken"));
-const makeToken = (id, name) => __awaiter(void 0, void 0, void 0, function* () {
-    const payload = { id, name };
+const makeToken = (id, name, role) => __awaiter(void 0, void 0, void 0, function* () {
+    const payload = { id, name, role };
     try {
         const token = yield JWT.sign(payload, process.env.JWT_KEY, { expiresIn: "2h" });
         return token;

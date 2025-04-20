@@ -51,7 +51,8 @@ exports.ConfigDB = ConfigDB;
 _a = ConfigDB;
 ConfigDB.dbConnecttion = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield Mongoose.connect(process.env.DB_CNN);
+        // await Mongoose.connect(process.env.DB_CNN!);
+        yield Mongoose.connect(process.env.DB_LOCAL);
         Mongoose.set("strictQuery", true);
         console.log("db online");
     }

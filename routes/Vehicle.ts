@@ -16,6 +16,6 @@ router.post("/", VehicleController.createVehicle);
 
 router.put("/:id", VehicleController.updateVehicle);
 
-router.delete("/:id", VehicleController.deleteVehicle);
+router.delete("/:id", ValidatorMiddlewares.adminJwtValidator, VehicleController.deleteVehicle);
 
 module.exports = router;

@@ -12,5 +12,5 @@ router.use(ValidatorMiddlewares_1.ValidatorMiddlewares.jwtValidator); // to appl
 router.get("/", VehicleController_1.VehicleController.getVehicles);
 router.post("/", VehicleController_1.VehicleController.createVehicle);
 router.put("/:id", VehicleController_1.VehicleController.updateVehicle);
-router.delete("/:id", VehicleController_1.VehicleController.deleteVehicle);
+router.delete("/:id", ValidatorMiddlewares_1.ValidatorMiddlewares.adminJwtValidator, VehicleController_1.VehicleController.deleteVehicle);
 module.exports = router;
