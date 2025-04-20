@@ -64,6 +64,7 @@ export class AuthController {
       res.status(200).json({
         id: user.id,
         name: user.name,
+        role: user.role,
         token,
       });
     } catch (error) {
