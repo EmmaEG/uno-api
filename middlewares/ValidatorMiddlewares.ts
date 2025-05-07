@@ -62,7 +62,7 @@ export class ValidatorMiddlewares {
     try {
       const payload = JWT.verify(token, process.env.JWT_KEY!) as IPayload;
       if (payload.role !== UserRole.ADMIN) {
-        return res.status(403).json({ msg: "Acceso denegado" });
+        return res.status(403).json({ msg: "Acceso denegado, hable con el administrador." });
       } 
     } catch (error) {
       return res.status(401).send({

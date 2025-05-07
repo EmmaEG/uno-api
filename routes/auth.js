@@ -37,22 +37,42 @@ const express_1 = require("express");
 const AuthController_1 = require("../controllers/AuthController");
 const Validators = __importStar(require("express-validator"));
 const ValidatorMiddlewares_1 = require("../middlewares/ValidatorMiddlewares");
+const Utils_1 = require("../utils/Utils");
 /*
     Users Routes
     host + /taller/auth
 */
 const router = (0, express_1.Router)();
-router.post("/register", [
-    // middlewares
-    Validators.check("name", "El nombre es obligatorio").not().isEmpty(),
-    Validators.check("email", "El email es obligatorio").isEmail(),
-    Validators.check("password", "El password debe tener 6 caracteres como mínimo").isLength({ min: 6 }),
+const authLimiter = Utils_1.Utils.getRateLimiter(10, 15);
+router.post("/register", authLimiter, [
+    Validators.check("name", "El nombre es obligatorio")
+        .notEmpty()
+        .trim()
+        .escape() // convert scripts in text
+        .isAlpha("es-ES", { ignore: " " })
+        .withMessage("El nombre solo puede contener letras y espacios"),
+    Validators.check("email", "El email es obligatorio")
+        .isEmail()
+        .normalizeEmail()
+        .trim()
+        .escape(),
+    Validators.check("password", "El password debe tener 6 caracteres como mínimo")
+        .isLength({ min: 6 })
+        .trim()
+        .escape(),
     ValidatorMiddlewares_1.ValidatorMiddlewares.fieldValidator,
-    ValidatorMiddlewares_1.ValidatorMiddlewares.adminJwtValidator
+    ValidatorMiddlewares_1.ValidatorMiddlewares.adminJwtValidator,
 ], AuthController_1.AuthController.createUser);
-router.post("/", [
-    Validators.check("email", "El email es obligatorio").isEmail(),
-    Validators.check("password", "El password debe tener 6 caracteres como mínimo").isLength({ min: 6 }),
+router.post("/", authLimiter, [
+    Validators.check("email", "El email es obligatorio")
+        .isEmail()
+        .normalizeEmail()
+        .trim()
+        .escape(),
+    Validators.check("password", "El password debe tener 6 caracteres como mínimo")
+        .isLength({ min: 6 })
+        .trim()
+        .escape(),
     ValidatorMiddlewares_1.ValidatorMiddlewares.fieldValidator,
 ], AuthController_1.AuthController.loginUser);
 router.get("/renew", ValidatorMiddlewares_1.ValidatorMiddlewares.jwtValidator, AuthController_1.AuthController.renewToken);

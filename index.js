@@ -13,7 +13,7 @@ const app = (0, express_1.default)();
 ConfigDB_1.ConfigDB.dbConnecttion();
 // middlewares
 app.use(cors());
-app.use(express_1.default.static("public")); // express.static es un middleware que se usa para definir directorios publicos
+app.use(express_1.default.static("public")); // express.static is a middleware to define public directories
 app.use(express_1.default.json()); // to process the information that comes in json format
 // routes
 app.use("/taller/auth", require("./routes/auth"));

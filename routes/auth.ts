@@ -2,37 +2,57 @@ import { Router } from "express";
 import { AuthController } from "../controllers/AuthController";
 import * as Validators from "express-validator";
 import { ValidatorMiddlewares } from "../middlewares/ValidatorMiddlewares";
+import { Utils } from "../utils/Utils";
 
 /*
     Users Routes
     host + /taller/auth
 */
 const router = Router();
+const authLimiter = Utils.getRateLimiter(10, 15);
 
 router.post(
   "/register",
+  authLimiter,
   [
-    // middlewares
-    Validators.check("name", "El nombre es obligatorio").not().isEmpty(),
-    Validators.check("email", "El email es obligatorio").isEmail(),
-    Validators.check(
-      "password",
-      "El password debe tener 6 caracteres como mínimo"
-    ).isLength({ min: 6 }),
+    Validators.check("name", "El nombre es obligatorio")
+      .notEmpty()
+      .trim()
+      .escape() // convert scripts in text
+      .isAlpha("es-ES", { ignore: " " })
+      .withMessage("El nombre solo puede contener letras y espacios"),
+
+    Validators.check("email", "El email es obligatorio")
+      .isEmail()
+      .normalizeEmail()
+      .trim()
+      .escape(),
+
+    Validators.check("password", "El password debe tener 6 caracteres como mínimo")
+      .isLength({ min: 6 })
+      .trim()
+      .escape(),
+
     ValidatorMiddlewares.fieldValidator,
-    ValidatorMiddlewares.adminJwtValidator
+    ValidatorMiddlewares.adminJwtValidator,
   ],
   AuthController.createUser
 );
 
 router.post(
   "/",
+  authLimiter,
   [
-    Validators.check("email", "El email es obligatorio").isEmail(),
-    Validators.check(
-      "password",
-      "El password debe tener 6 caracteres como mínimo"
-    ).isLength({ min: 6 }),
+    Validators.check("email", "El email es obligatorio")
+    .isEmail()
+    .normalizeEmail()
+    .trim()
+    .escape(),
+
+    Validators.check("password", "El password debe tener 6 caracteres como mínimo")
+    .isLength({ min: 6 })
+    .trim()
+    .escape(),
     ValidatorMiddlewares.fieldValidator,
   ],
   AuthController.loginUser

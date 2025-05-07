@@ -81,8 +81,11 @@ export class AuthController {
       const user = await User.findOne({ email });
 
       if (!user) {
-        return;
+        return res.status(400).json({
+          msg: "Hable con el Adminstrador",
+        });
       }
+
       const token = await makeToken(user.id, user.name, user.role);
 
       res.status(200).json({

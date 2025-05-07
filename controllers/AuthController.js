@@ -113,7 +113,9 @@ AuthController.renewToken = (req, res) => __awaiter(void 0, void 0, void 0, func
         const email = req.body.email;
         const user = yield UserClass_1.User.findOne({ email });
         if (!user) {
-            return;
+            return res.status(400).json({
+                msg: "Hable con el Adminstrador",
+            });
         }
         const token = yield (0, jwt_1.makeToken)(user.id, user.name, user.role);
         res.status(200).json({

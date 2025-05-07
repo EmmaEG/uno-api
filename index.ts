@@ -11,7 +11,7 @@ ConfigDB.dbConnecttion();
 
 // middlewares
 app.use(cors());
-app.use(express.static("public")); // express.static es un middleware que se usa para definir directorios publicos
+app.use(express.static("public")); // express.static is a middleware to define public directories
 app.use(express.json()); // to process the information that comes in json format
 
 // routes

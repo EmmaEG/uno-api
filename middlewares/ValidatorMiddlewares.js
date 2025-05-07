@@ -79,7 +79,7 @@ ValidatorMiddlewares.adminJwtValidator = (req, res, next) => {
     try {
         const payload = JWT.verify(token, process.env.JWT_KEY);
         if (payload.role !== Roles_enum_1.UserRole.ADMIN) {
-            return res.status(403).json({ msg: "Acceso denegado" });
+            return res.status(403).json({ msg: "Acceso denegado, hable con el administrador." });
         }
     }
     catch (error) {
