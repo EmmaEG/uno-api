@@ -52,7 +52,6 @@ _a = ConfigDB;
 ConfigDB.dbConnecttion = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield Mongoose.connect(process.env.DB_CNN);
-        // await Mongoose.connect(process.env.DB_LOCAL!);
         Mongoose.set("strictQuery", true);
         console.log("db online");
     }
@@ -61,3 +60,4 @@ ConfigDB.dbConnecttion = () => __awaiter(void 0, void 0, void 0, function* () {
         throw new Error("Error to up db");
     }
 });
+// await Mongoose.connect(process.env.DB_LOCAL!);

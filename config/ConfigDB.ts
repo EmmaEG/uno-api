@@ -4,9 +4,7 @@ export class ConfigDB {
   static dbConnecttion = async () => {
     try {
       await Mongoose.connect(process.env.DB_CNN!);
-      // await Mongoose.connect(process.env.DB_LOCAL!);
       Mongoose.set("strictQuery", true);
-
       console.log("db online");
     } catch (error) {
       console.log(error);
@@ -14,3 +12,5 @@ export class ConfigDB {
     }
   };
 }
+
+// await Mongoose.connect(process.env.DB_LOCAL!);
