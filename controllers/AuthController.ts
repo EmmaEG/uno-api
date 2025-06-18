@@ -77,8 +77,8 @@ export class AuthController {
 
   static renewToken = async (req: Request, res: Response) => {
     try {
-      const email = req.body.email;
-      const user = await User.findOne({ email });
+      const { id } = req.body;
+      const user = await User.findById(id);
 
       if (!user) {
         return res.status(400).json({
